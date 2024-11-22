@@ -2,43 +2,47 @@
     <h2>Project Details</h2>
     <p><strong>Name:</strong> {{ project.name }}</p>
     <p><strong>Description:</strong> {{ project.description }}</p>
-<!--    <p><strong>Start Date:</strong> {{ project.startDate | date }}</p>-->
-<!--    <p><strong>End Date:</strong> {{ project.endDate | date }}</p>-->
-    <button pButton label="Add Task" class="p-mt-3" (click)="openTaskPopup()"></button>
+    <!--    <p><strong>Start Date:</strong> {{ project.startDate | date }}</p>-->
+    <!--    <p><strong>End Date:</strong> {{ project.endDate | date }}</p>-->
     <!-- Search Zone -->
-    <div class="search-zone p-mt-3 p-grid">
-        <div class="p-col-12 p-md-4">
-            <label for="searchId">Search by ID</label>
-            <input id="searchId" type="text" pInputText [(ngModel)]="searchId" (input)="applyFilters()" />
+    <div class="search-zone grid">
+        <div class="col-5 col-sm-12">
+            <button pButton label="Add Task" class="p-mt-3" (click)="openTaskPopup()"></button>
+        </div>
+        <div class="col-7 md-4 grid">
+            <div class="col">
+                <input id="searchId" type="text" pInputText [(ngModel)]="searchId" (input)="applyFilters()"
+                       class="search-filter"
+                       placeholder="Search by ID"/>
+            </div>
+            <div class="col">
+                <p-dropdown
+                    id="searchStatus"
+                    [options]="[{ label: 'NEW', value: 'NEW' }, { label: 'DONE', value: 'DONE' }, { label: 'PROGRESSING', value: 'PROGRESSING' }]"
+                    [(ngModel)]="searchStatus"
+                    (onChange)="applyFilters()"
+                    class="search-filter"
+                    placeholder="Select a status"
+                ></p-dropdown>
+            </div>
+            <div class="col">
+                <p-dropdown
+                    id="searchUser"
+                    class="search-filter"
+                    [options]="users"
+                    [(ngModel)]="searchUser"
+                    (ngModelChange)="applyFilters()"
+                    placeholder="Select a user"
+                    [showClear]="true"
+                ></p-dropdown>
+            </div>
+            <div class="col">
+                <button pButton label="Reset Filters" class="p-button-secondary" (click)="resetFilters()"></button>
+            </div>
         </div>
 
-        <div class="p-col-12 p-md-4">
-            <label for="searchStatus">Search by Status</label>
-            <p-dropdown
-                id="searchStatus"
-                [options]="[{ label: 'NEW', value: 'NEW' }, { label: 'DONE', value: 'DONE' }, { label: 'PROGRESSING', value: 'PROGRESSING' }]"
-                [(ngModel)]="searchStatus"
-                (onChange)="applyFilters()"
-                placeholder="Select a status"
-            ></p-dropdown>
-        </div>
-
-        <div class="p-col-12 p-md-4">
-            <label for="searchUser">Search by User</label>
-            <p-dropdown
-                id="searchUser"
-                [options]="users"
-                [(ngModel)]="searchUser"
-                (ngModelChange)="applyFilters()"
-                placeholder="Select a user"
-                [showClear]="true"
-            ></p-dropdown>
-        </div>
-
-        <div class="p-col-12 p-mt-2">
-            <button pButton label="Reset Filters" class="p-button-secondary" (click)="resetFilters()"></button>
-        </div>
     </div>
+
     <app-task [tasks]="tasks" (editTask)="openTaskPopup($event)"></app-task>
 </div>
 

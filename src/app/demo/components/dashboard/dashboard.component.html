@@ -1,0 +1,13 @@
+<div class="project-management">
+    <h2>Project Management</h2>
+    <div *ngIf="loading">Loading projects...</div>
+    <div *ngIf="!loading && projects.length === 0">No projects available.</div>
+    <div class="project-list grid">
+            <app-project-management
+                *ngFor="let project of projects"
+                [project]="project"
+                (click)="navigateToDetail(project.id)"
+                class="col-12 lg:col-4"
+            ></app-project-management>
+    </div>
+</div>

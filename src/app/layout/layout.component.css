@@ -1,0 +1,28 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar {
+  flex-shrink: 0;
+}
+
+.sidebar-header {
+  padding: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ddd;
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+  margin-left: 200px; /* Adjust width to match sidebar */
+}
+
+p-sidebar {
+  width: 200px;
+}

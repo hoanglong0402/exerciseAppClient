@@ -1,0 +1,23 @@
+<div>
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="name">Task Name</label>
+            <input id="name" type="text" pInputText [(ngModel)]="task.name" />
+        </div>
+
+        <div class="p-field">
+            <label for="status">Status</label>
+            <input id="status" type="text" pInputText [(ngModel)]="task.status" />
+        </div>
+
+        <div class="p-field">
+            <label for="dueDate">Due Date</label>
+            <input id="dueDate" type="date" pInputText [(ngModel)]="task.dueDate" />
+        </div>
+    </div>
+
+    <div class="p-d-flex p-jc-end p-mt-3">
+        <button pButton label="Cancel" class="p-button-text" (click)="closePopup()"></button>
+        <button pButton label="Save" (click)="saveTask()"></button>
+    </div>
+</div>

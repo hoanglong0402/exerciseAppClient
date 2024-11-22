@@ -1,0 +1,47 @@
+<div class="project-details" *ngIf="project">
+    <h2>Project Details</h2>
+    <p><strong>Name:</strong> {{ project.name }}</p>
+    <p><strong>Description:</strong> {{ project.description }}</p>
+<!--    <p><strong>Start Date:</strong> {{ project.startDate | date }}</p>-->
+<!--    <p><strong>End Date:</strong> {{ project.endDate | date }}</p>-->
+    <button pButton label="Add Task" class="p-mt-3" (click)="openTaskPopup()"></button>
+    <!-- Search Zone -->
+    <div class="search-zone p-mt-3 p-grid">
+        <div class="p-col-12 p-md-4">
+            <label for="searchId">Search by ID</label>
+            <input id="searchId" type="text" pInputText [(ngModel)]="searchId" (input)="applyFilters()" />
+        </div>
+
+        <div class="p-col-12 p-md-4">
+            <label for="searchStatus">Search by Status</label>
+            <p-dropdown
+                id="searchStatus"
+                [options]="[{ label: 'NEW', value: 'NEW' }, { label: 'DONE', value: 'DONE' }, { label: 'PROGRESSING', value: 'PROGRESSING' }]"
+                [(ngModel)]="searchStatus"
+                (onChange)="applyFilters()"
+                placeholder="Select a status"
+            ></p-dropdown>
+        </div>
+
+        <div class="p-col-12 p-md-4">
+            <label for="searchUser">Search by User</label>
+            <p-dropdown
+                id="searchUser"
+                [options]="users"
+                [(ngModel)]="searchUser"
+                (ngModelChange)="applyFilters()"
+                placeholder="Select a user"
+                [showClear]="true"
+            ></p-dropdown>
+        </div>
+
+        <div class="p-col-12 p-mt-2">
+            <button pButton label="Reset Filters" class="p-button-secondary" (click)="resetFilters()"></button>
+        </div>
+    </div>
+    <app-task [tasks]="tasks" (editTask)="openTaskPopup($event)"></app-task>
+</div>
+
+<div *ngIf="!project">
+    <p>Loading project details...</p>
+</div>

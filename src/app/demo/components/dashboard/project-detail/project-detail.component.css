@@ -2,3 +2,21 @@
     width: 100%;
     display: grid;
 }
+.project-detail {
+    max-width: 1200px;
+    margin: auto;
+}
+
+.p-card-header h2 {
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.p-card-body p {
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.p-button {
+    min-width: 120px;
+}

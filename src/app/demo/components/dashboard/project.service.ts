@@ -20,6 +20,13 @@ export interface Task {
     status: string;
 }
 
+export interface User {
+    id: number;
+    userName: string;
+    email?: string;
+    role?: string;
+}
+
 @Injectable({
     providedIn: 'root',
 })
@@ -128,7 +135,41 @@ export class ProjectService {
         return this.http.put(`${this.baseUrl}/projects/${projectId}/tasks/${task.id}`, task);
     }
 
-    getUsers(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.baseUrl}/users`);
+    getUsers(): Observable<User[]> {
+        const mockProjects: User[] =
+            [
+                {
+                    "id": 1000,
+                    "userName": "MinhNguyen",
+                    "email": "minhnguyen@example.com",
+                    "role": "PRODUCT_OWNER"
+                },
+                {
+                    "id": 1001,
+                    "userName": "LanPham",
+                    "email": "lanpham@example.com",
+                    "role": "PRODUCT_OWNER"
+                },
+                {
+                    "id": 1002,
+                    "userName": "HanhTran",
+                    "email": "hanhtran@example.com",
+                    "role": "PRODUCT_OWNER"
+                },
+                {
+                    "id": 1003,
+                    "userName": "TuanLe",
+                    "email": "tuanle@example.com",
+                    "role": "PRODUCT_OWNER"
+                },
+                {
+                    "id": 1004,
+                    "userName": "HoaDang",
+                    "email": "hoadang@example.com",
+                    "role": "PRODUCT_OWNER"
+                }
+            ];
+        return of(mockProjects);
+        // return this.http.get<any[]>(`${this.baseUrl}/users`);
     }
 }

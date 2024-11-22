@@ -1,9 +1,20 @@
+<div class="p-5 p-grid p-dir-col p-md-dir-row p-ai-start p-jc-center project-detail">
+    <!-- Project Card -->
+    <div class="card shadow-3 col-12 md-6 lg-4">
+        <div class="card-header text-center py-3">
+            <h2>{{ project.name }}</h2>
+        </div>
+        <div class="card-body">
+            <p>
+                <strong>Description:</strong> {{ project.description }}
+            </p>
+            <p>
+                <strong>Owner Name:</strong> {{ project.ownerName }}
+            </p>
+        </div>
+    </div>
+</div>
 <div class="project-details" *ngIf="project">
-    <h2>Project Details</h2>
-    <p><strong>Name:</strong> {{ project.name }}</p>
-    <p><strong>Description:</strong> {{ project.description }}</p>
-    <!--    <p><strong>Start Date:</strong> {{ project.startDate | date }}</p>-->
-    <!--    <p><strong>End Date:</strong> {{ project.endDate | date }}</p>-->
     <!-- Search Zone -->
     <div class="search-zone grid">
         <div class="col-5 col-sm-12">
@@ -32,8 +43,10 @@
                     [options]="users"
                     [(ngModel)]="searchUser"
                     (ngModelChange)="applyFilters()"
-                    placeholder="Select a user"
+                    placeholder="Search All user"
                     [showClear]="true"
+                    optionLabel="userName"
+                    optionValue="id"
                 ></p-dropdown>
             </div>
             <div class="col">

@@ -2,7 +2,8 @@
     <ng-template pTemplate="header">
         <tr>
             <th>ID</th>
-            <th>Task Name</th>
+            <th>Task title</th>
+            <th>Assigned Username</th>
             <th>Status</th>
             <th>Edit</th>
         </tr>
@@ -11,7 +12,11 @@
         <tr>
             <td>{{ task.id }}</td>
             <td>{{ task.title }}</td>
-            <td>{{ task.status }}</td>
+            <td>{{ task.assignedUserName }}</td>
+            <td>
+                <p-tag [severity]="task.status === 'NEW' ? 'info' : (task.status === 'DONE' ? 'success' : 'primary')"
+                       [value]="task.status"/>
+            </td>
             <td>
                 <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text"
                         (click)="onEditTask(task)"></button>

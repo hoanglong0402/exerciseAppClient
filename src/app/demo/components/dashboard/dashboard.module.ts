@@ -15,6 +15,7 @@ import {ProjectDetailComponent} from "./project-detail/project-detail.component"
 import {TaskPopupComponent} from "./task-popup/task-popup.component";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextModule} from "primeng/inputtext";
+import {TagModule} from "primeng/tag";
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import {InputTextModule} from "primeng/inputtext";
         ButtonModule,
         DashboardsRoutingModule,
         DropdownModule,
-        InputTextModule
+        InputTextModule,
+        TagModule
     ],
     declarations: [DashboardComponent, ProjectManagementComponent, ProjectDetailComponent, TaskComponent, TaskPopupComponent],
 })

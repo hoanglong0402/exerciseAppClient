@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ProjectService} from "../project.service";
+import {ProjectService, User} from "../project.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {TaskPopupComponent} from "../task-popup/task-popup.component";
 
@@ -15,7 +15,7 @@ export class ProjectDetailComponent implements OnInit {
     tasks: any[] = [];
     projectId: string = '';
 
-    users: any[] = [];
+    users: User[] = [];
     searchId: string = '';
     searchStatus: string = '';
     searchUser: string = '';
@@ -70,7 +70,9 @@ export class ProjectDetailComponent implements OnInit {
 
     getUsers(): void {
         this.projectService.getUsers().subscribe({
-            next: (data) => (this.users = data),
+            next: (data) => {
+                this.users = [{ id: null, userName: 'Search All user' }, ...data];
+            },
             error: (err) => console.error('Error fetching users:', err)
         });
     }

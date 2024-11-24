@@ -1,3 +1,11 @@
+<p-dialog header="Confirm Delete" [(visible)]="showConfirmDialog" [modal]="true" [closable]="false" [dismissableMask]="true">
+    <p>Are you sure you want to delete the task <b>{{ selectedTask?.title }}</b>?</p>
+    <div class="p-dialog-footer confirm-button">
+        <button pButton label="Yes" icon="pi pi-check" class="p-button-danger" (click)="deleteConfirmed()"></button>
+        <button pButton label="No" icon="pi pi-times" class="p-button-secondary" (click)="showConfirmDialog = false"></button>
+    </div>
+</p-dialog>
+
 <p-table [value]="tasks" responsiveLayout="scroll">
     <ng-template pTemplate="header">
         <tr>
@@ -5,7 +13,7 @@
             <th>Task title</th>
             <th>Assigned Username</th>
             <th>Status</th>
-            <th>Edit</th>
+            <th></th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-task>
@@ -20,6 +28,8 @@
             <td>
                 <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-text"
                         (click)="onEditTask(task)"></button>
+                <button pButton icon="pi pi-trash" class="p-button-rounded p-button-text p-button-danger"
+                        (click)="openConfirmDialog(task)"></button>
             </td>
         </tr>
     </ng-template>

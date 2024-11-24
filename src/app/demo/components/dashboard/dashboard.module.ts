@@ -16,6 +16,9 @@ import {TaskPopupComponent} from "./task-popup/task-popup.component";
 import {DropdownModule} from "primeng/dropdown";
 import {InputTextModule} from "primeng/inputtext";
 import {TagModule} from "primeng/tag";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
     imports: [
@@ -30,7 +33,10 @@ import {TagModule} from "primeng/tag";
         DashboardsRoutingModule,
         DropdownModule,
         InputTextModule,
-        TagModule
+        TagModule,
+        InputTextareaModule,
+        ConfirmDialogModule,
+        DialogModule
     ],
     declarations: [DashboardComponent, ProjectManagementComponent, ProjectDetailComponent, TaskComponent, TaskPopupComponent],
 })

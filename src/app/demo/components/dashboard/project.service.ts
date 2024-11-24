@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 
 export interface Project {
@@ -37,139 +37,36 @@ export class ProjectService {
     }
 
     getProjects(): Observable<Project[]> {
-        const mockProjects: Project[] = [
-            {
-                "id": 1000,
-                "name": "Project January",
-                "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                "ownerId": 1000,
-                "ownerName": "MinhNguyen"
-            },
-            {
-                "id": 1001,
-                "name": "Project February",
-                "description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                "ownerId": 1001,
-                "ownerName": "LanPham"
-            },
-            {
-                "id": 1002,
-                "name": "Project March",
-                "description": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
-                "ownerId": 1002,
-                "ownerName": "HanhTran"
-            },
-            {
-                "id": 1003,
-                "name": "Project April",
-                "description": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.",
-                "ownerId": 1003,
-                "ownerName": "TuanLe"
-            },
-            {
-                "id": 1004,
-                "name": "Project May",
-                "description": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-                "ownerId": 1004,
-                "ownerName": "HoaDang"
-            }
-        ];
-        return of(mockProjects);
-        // return this.http.get<Project[]>(`${this.baseUrl}/projects`);
+        return this.http.get<Project[]>(`${this.baseUrl}/projects`);
     }
 
     getProjectById(id: string): Observable<Project> {
-        const mockProjects: Project =
-            {
-                "id": 1004,
-                "name": "Project May",
-                "description": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia.",
-                "ownerId": 1004,
-                "ownerName": "HoaDang"
-            };
-        return of(mockProjects);
-        // return this.http.get(`${this.baseUrl}/projects/${id}`);
+        return this.http.get<Project>(`${this.baseUrl}/projects/${id}`);
+    }
+
+    deleteTaskById(id: number): Observable<void> {
+        return this.http.delete<void>(`${this.baseUrl}/tasks/${id}`);
     }
 
     getTasksByProjectId(projectId: string, param: any): Observable<Task[]> {
-        const mockProjects: Task[] =
-            [
-                {
-                    "id": 1000,
-                    "projectId": 1001,
-                    "assignedTo": 1001,
-                    "assignedUserName": "LanPham",
-                    "title": "Title tasks",
-                    "description": "no description",
-                    "status": "NEW"
-                },
-                {
-                    "id": 1001,
-                    "projectId": 1001,
-                    "assignedTo": 1001,
-                    "assignedUserName": "LanPham",
-                    "title": "Title tasks 231321",
-                    "description": "no description 3232",
-                    "status": "NEW"
-                },
-                {
-                    "id": 1002,
-                    "projectId": 1001,
-                    "assignedTo": 1001,
-                    "assignedUserName": "LanPham",
-                    "title": "Title tasks 1231",
-                    "description": "no description 2323",
-                    "status": "NEW"
-                }
-            ];
-        return of(mockProjects);
-        // TODO add parameter
-        // return this.http.get<any[]>(`${this.baseUrl}/tasks/projectId/${projectId}`);
+        let params = new HttpParams();
+        for (const key in param) {
+            if (param.hasOwnProperty(key) && param[key] !== null && param[key] !== undefined) {
+                params = params.set(key, param[key]);
+            }
+        }
+
+        return this.http.get<Task[]>(`${this.baseUrl}/tasks/project/${projectId}`, { params });
     }
 
-    addTask(projectId: string, task: any): Observable<any> {
-        return this.http.post(`${this.baseUrl}/projects/${projectId}/tasks`, task);
-    }
-
-    updateTask(projectId: string, task: any): Observable<any> {
-        return this.http.put(`${this.baseUrl}/projects/${projectId}/tasks/${task.id}`, task);
+    upsertTask(task: Task): Observable<any> {
+        if (task.status === "") {
+            task.status = null;
+        }
+        return this.http.post(`${this.baseUrl}/tasks`, task);
     }
 
     getUsers(): Observable<User[]> {
-        const mockProjects: User[] =
-            [
-                {
-                    "id": 1000,
-                    "userName": "MinhNguyen",
-                    "email": "minhnguyen@example.com",
-                    "role": "PRODUCT_OWNER"
-                },
-                {
-                    "id": 1001,
-                    "userName": "LanPham",
-                    "email": "lanpham@example.com",
-                    "role": "PRODUCT_OWNER"
-                },
-                {
-                    "id": 1002,
-                    "userName": "HanhTran",
-                    "email": "hanhtran@example.com",
-                    "role": "PRODUCT_OWNER"
-                },
-                {
-                    "id": 1003,
-                    "userName": "TuanLe",
-                    "email": "tuanle@example.com",
-                    "role": "PRODUCT_OWNER"
-                },
-                {
-                    "id": 1004,
-                    "userName": "HoaDang",
-                    "email": "hoadang@example.com",
-                    "role": "PRODUCT_OWNER"
-                }
-            ];
-        return of(mockProjects);
-        // return this.http.get<any[]>(`${this.baseUrl}/users`);
+        return this.http.get<User[]>(`${this.baseUrl}/users`);
     }
 }

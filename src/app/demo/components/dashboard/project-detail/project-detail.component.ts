@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ProjectService, User} from "../project.service";
 import {DialogService} from "primeng/dynamicdialog";
 import {TaskPopupComponent} from "../task-popup/task-popup.component";
+import {debounceTime, distinctUntilChanged, Subject, takeUntil} from "rxjs";
+import {MessageService} from "primeng/api";
 
 @Component({
     selector: 'app-project-detail',
@@ -10,20 +12,23 @@ import {TaskPopupComponent} from "../task-popup/task-popup.component";
     styleUrl: './project-detail.component.css',
     providers: [DialogService]
 })
-export class ProjectDetailComponent implements OnInit {
+export class ProjectDetailComponent implements OnInit, OnDestroy {
     project: any = null;
     tasks: any[] = [];
     projectId: string = '';
 
     users: User[] = [];
-    searchId: string = '';
+    searchTitle: string = '';
     searchStatus: string = '';
     searchUser: string = '';
+    private searchTitleSubject: Subject<string> = new Subject<string>();
+    private destroy$: Subject<void> = new Subject<void>();
 
     constructor(
         private route: ActivatedRoute,
         private projectService: ProjectService,
-        private dialogService: DialogService
+        private dialogService: DialogService,
+        private messageService: MessageService
     ) {
     }
 
@@ -35,6 +40,20 @@ export class ProjectDetailComponent implements OnInit {
             this.getTasks(this.projectId);
         }
         this.getUsers();
+
+        this.searchTitleSubject
+            .pipe(
+                debounceTime(300),
+                distinctUntilChanged(),
+                takeUntil(this.destroy$)
+            )
+            .subscribe((searchValue: string) => {
+                this.applyFilters();
+            });
+    }
+
+    onSearchIdChange(value: string): void {
+        this.searchTitleSubject.next(value); // Push changes to the Subject
     }
 
     getProjectDetails(id: string): void {
@@ -63,25 +82,24 @@ export class ProjectDetailComponent implements OnInit {
 
         ref.onClose.subscribe((result) => {
             if (result) {
-                this.getTasks(this.projectId); // Refresh the task list after add/update
+                this.messageService.add({severity: 'success', summary: 'Success', detail: 'Task list updated'});
+                this.getTasks(this.projectId);
             }
         });
     }
 
     getUsers(): void {
         this.projectService.getUsers().subscribe({
-            next: (data) => {
-                this.users = [{ id: null, userName: 'Search All user' }, ...data];
-            },
+            next: (data) => (this.users = data),
             error: (err) => console.error('Error fetching users:', err)
         });
     }
 
     applyFilters(): void {
         const filters = {
-            id: this.searchId || null,
-            status: this.searchStatus || null,
-            user: this.searchUser || null
+            searchKeyword: this.searchTitle || null,
+            taskStatus: this.searchStatus || null,
+            userId: this.searchUser || null
         };
 
         this.projectService.getTasksByProjectId(this.projectId, filters).subscribe({
@@ -91,10 +109,29 @@ export class ProjectDetailComponent implements OnInit {
     }
 
     resetFilters(): void {
-        this.searchId = '';
+        this.searchTitle = '';
         this.searchStatus = '';
         this.searchUser = '';
         this.applyFilters();
+    }
+
+    handleDeleteTask(taskId: number): void {
+        // Call the API to delete the task
+        this.projectService.deleteTaskById(taskId).subscribe({
+            next: () => {
+                this.messageService.add({severity: 'success', summary: 'Success', detail: 'Deleted'});
+                this.getTasks(this.projectId);
+            },
+            error: (err) => {
+                this.messageService.add({severity: 'success', summary: 'Success', detail: 'Error when delete task'});
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        // Clean up subscriptions
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
 }

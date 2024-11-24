@@ -1,23 +1,62 @@
 <div>
     <div class="p-fluid">
-        <div class="p-field">
-            <label for="name">Task Name</label>
-            <input id="name" type="text" pInputText [(ngModel)]="task.name" />
+        <div class="py-2">
+            <label for="title">Task Title</label>
+            <input id="title" type="text" pInputText [(ngModel)]="task.title"
+                   name="title"
+                   #title="ngModel"
+                   required
+                   minlength="5"
+                   maxlength="50"/>
+            <small *ngIf="title.invalid && title.touched" class="p-error">
+                Title is required (5-50 characters).
+            </small>
         </div>
 
-        <div class="p-field">
+        <div class="py-2">
+            <label for="description">Task Description</label>
+            <textarea id="description" rows="3" pInputTextarea [(ngModel)]="task.description"
+                      name="description"
+                      #description="ngModel"
+                      minlength="10"
+                      maxlength="200"></textarea>
+            <small *ngIf="description.invalid && description.touched" class="p-error">
+                Description is required (10-200 characters).
+            </small>
+        </div>
+
+        <div class="py-2">
+            <label for="assignedUser">Assigned User</label>
+            <p-dropdown
+                    id="assignedUser"
+                    [options]="users"
+                    [(ngModel)]="task.assignedTo"
+                    placeholder="Select a User"
+                    optionLabel="userName"
+                    optionValue="id"
+            ></p-dropdown>
+        </div>
+
+        <div class="py-2" *ngIf="isEditMode">
             <label for="status">Status</label>
-            <input id="status" type="text" pInputText [(ngModel)]="task.status" />
-        </div>
-
-        <div class="p-field">
-            <label for="dueDate">Due Date</label>
-            <input id="dueDate" type="date" pInputText [(ngModel)]="task.dueDate" />
+            <p-dropdown
+                    id="status"
+                    [options]="statusOptions"
+                    [(ngModel)]="task.status"
+                    placeholder="Select a Status"
+                    [appendTo]="'body'"
+            ></p-dropdown>
         </div>
     </div>
 
-    <div class="p-d-flex p-jc-end p-mt-3">
-        <button pButton label="Cancel" class="p-button-text" (click)="closePopup()"></button>
-        <button pButton label="Save" (click)="saveTask()"></button>
+    <div class="confirm-button py-2">
+        <button pButton label="Cancel" class="p-button-text mx-5" (click)="closePopup()"></button>
+        <button
+                pButton
+                class="mx-5"
+                [label]="isEditMode ? 'Update' : 'Create'"
+                [disabled]="title.invalid || description.invalid"
+                (click)="saveTask()"
+        ></button>
     </div>
 </div>

@@ -22,16 +22,17 @@
         </div>
         <div class="col-7 md-4 grid">
             <div class="col">
-                <input id="searchId" type="text" pInputText [(ngModel)]="searchId" (input)="applyFilters()"
+                <input id="searchTitle" type="text" pInputText [(ngModel)]="searchTitle" (ngModelChange)="onSearchIdChange($event)"
                        class="search-filter"
-                       placeholder="Search by ID"/>
+                       placeholder="Search by title"/>
             </div>
             <div class="col">
                 <p-dropdown
                     id="searchStatus"
-                    [options]="[{ label: 'NEW', value: 'NEW' }, { label: 'DONE', value: 'DONE' }, { label: 'PROGRESSING', value: 'PROGRESSING' }]"
+                    [options]="[{ label: 'NEW', value: 'NEW' }, { label: 'OPEN_FOR_DEV', value: 'OPEN_FOR_DEV' }, { label: 'DONE', value: 'DONE' }]"
                     [(ngModel)]="searchStatus"
                     (onChange)="applyFilters()"
+                    [showClear]="true"
                     class="search-filter"
                     placeholder="Select a status"
                 ></p-dropdown>
@@ -53,10 +54,9 @@
                 <button pButton label="Reset Filters" class="p-button-secondary" (click)="resetFilters()"></button>
             </div>
         </div>
-
     </div>
 
-    <app-task [tasks]="tasks" (editTask)="openTaskPopup($event)"></app-task>
+    <app-task [tasks]="tasks" (editTask)="openTaskPopup($event)" (deleteTask)="handleDeleteTask($event)"></app-task>
 </div>
 
 <div *ngIf="!project">
